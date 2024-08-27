@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { siteConfig } from "@/lib/site";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,13 +31,7 @@ export const metadata: Metadata = {
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
   icons: {
-    icon: `${siteConfig.url}/favicon.ico`,
-    shortcut: `${siteConfig.url}/favicon-16x16.png`,
-    apple: `${siteConfig.url}/apple-touch-icon.png`,
-    other: {
-      rel: "icon",
-      url: `./favicon.ico`,
-    },
+    icon: `./favicon/icon.svg`,
   },
 };
 
@@ -48,8 +43,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <Toaster richColors />
         <Header />
-        <main className="mx-auto min-h-[calc(100vh-68px)] max-w-4xl px-8 pb-16 pt-24">
+        <main className="mx-auto min-h-[calc(100vh-68px)] max-w-4xl px-8 pb-16 pt-24 ">
           {children}
         </main>
         <Footer />

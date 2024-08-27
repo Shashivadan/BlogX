@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,10 +8,13 @@
   :root {
     --background: 4 1 2;
     --background-lighter: 12 9 10;
+    --background-x : repeating-linear-gradient(36deg, rgba(255,255,255, 0.1), rgba(255,255,255, 0.1) 1px, transparent 0px, transparent 2px);
 
     --foreground: 255 255 255;
 
     --muted-foreground: 135 135 136;
+
+    --font-press: "Press Start 2P";
 
     --accent: 14 14 16;
     --accent-highlight: 22 22 22;
@@ -22,11 +27,23 @@
   }
 }
 
+/* body {
+  min-height: 100%;
+  background:
+    repeating-radial-gradient(#0e0d0d 0 0.0001%,#000 0 0.0002%)
+    60% 60%/3000px 3000px,
+    repeating-conic-gradient(#0e0d0d 0 0.0001%,#000 0 0.0002%)
+    40% 40%/3000px 3000px;
+
+  background-blend-mode: difference;
+} */
+
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground relative font-sans antialiased text-white;
+    @apply bg-background  text-foreground relative font-sans antialiased text-white;
   }
 }
