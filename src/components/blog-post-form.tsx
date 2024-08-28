@@ -3,7 +3,13 @@
 import React from "react";
 import { type Post, Visibility } from "@prisma/client";
 import BackButton from "./back-button";
-import { Loader2Icon, SettingsIcon, X } from "lucide-react";
+import { Contact, Loader2Icon, SettingsIcon, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { z } from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -21,6 +27,8 @@ import {
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
+import RichTextEditor from "./editor/rich-text-editor";
+import { blogSchema } from "@/schemas/blog-schema";
 
 type PropsType = {
   post: Post;
@@ -31,11 +39,24 @@ export default function BlogPostForm({ post }: PropsType) {
   const [title, setTitle] = React.useState(post.title);
   const [description, setDescription] = React.useState(post.description);
   const [content, setContent] = React.useState(post.content);
+  const [saving, setSaving] = React.useState(false);
+  const [publishing, setPublishing] = React.useState(false);
   const [visibility, setVisibility] = React.useState<Visibility>(
     post.visibility
   );
 
+   const form = useForm<z.infer<typeof blogSchema>>({
+     resolver: zodResolver(blogSchema),
+     defaultValues: {
+       title : post.title,
+       content : post.content,
+      description  : post.description
+     },
+   });
+
   const handleSaveSettingsIcon = () => {};
+  const handleSave = () => {};
+  const handlePublish = () => {};
 
   return (
     <>
@@ -107,12 +128,35 @@ export default function BlogPostForm({ post }: PropsType) {
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Textarea
-            className="rounded-[6px] border-zinc-900 mt-2 focus:border-zinc-90 resize-none "
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="description"
-            value={description ?? undefined}
+          <RichTextEditor
+            options={{ content }}
+            onChange={(editor) =>
+              setContent(editor.storage.markdown.getMarkdown())
+            }
           />
+          <div
+            className={cn(
+              "flex",
+              post.published ? "justify-end" : "justify-between"
+            )}
+          >
+            {!post.published && (
+              <>
+                <Button onClick={handleSave} disabled={saving}>
+                  {saving && (
+                    <Loader2Icon size={16} className="mr-2 animate-spin" />
+                  )}
+                  Save as draft
+                </Button>
+              </>
+            )}
+            <Button onClick={handlePublish} disabled={publishing}>
+              {publishing && (
+                <Loader2Icon size={16} className="mr-2 animate-spin" />
+              )}
+              Publish
+            </Button>
+          </div>
         </div>
       </div>
     </>
