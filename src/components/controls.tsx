@@ -91,15 +91,15 @@ export default function Controls({id,  user , authorId , postTitle} : ConstrolPr
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className=' rounded-[6px] border-none '>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             &quot;{postTitle}&quot; will be permanently deleted. This action
             cannot be undone.
           </AlertDialogDescription>
           <div className="flex justify-between">
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+            <AlertDialogCancel className=' bg-zinc-900 rounded-[6px] border-none hover:bg-zinc-800'>Cancel</AlertDialogCancel>
+            <AlertDialogAction className=' bg-zinc-900 rounded-[6px] hover:bg-red-600 ' onClick={handleDelete}>Delete</AlertDialogAction>
           </div>
         </AlertDialogContent>
       </AlertDialog>
