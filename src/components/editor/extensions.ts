@@ -15,19 +15,19 @@ export const extensions: AnyExtension[] = [
       },
     },
   }),
-  Markdown,
   Highlight,
+  TaskList,
+  TaskItem.configure({
+    nested: true,
+  }),
+  Placeholder.configure({
+    placeholder: "Type something ...",
+  }),
+  Markdown,
   Link.configure({
     openOnClick: false,
   }).extend({
     inclusive: false,
     priority: 100,
   }),
-  Placeholder.configure({
-    placeholder: "Type Your Story....",
-  }),
-  TaskItem.configure({
-    nested: true,
-  }),
-  TaskList,
 ];

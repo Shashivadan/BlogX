@@ -3,12 +3,8 @@
 import React from "react";
 import { type Post, Visibility } from "@prisma/client";
 import BackButton from "./back-button";
-import { Contact, Loader2Icon, SettingsIcon, X } from "lucide-react";
+import { Loader2Icon, SettingsIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { z } from "zod";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
 import {
   AlertDialog,
@@ -27,8 +23,11 @@ import {
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
-import RichTextEditor from "./editor/rich-text-editor";
-import { blogSchema } from "@/schemas/blog-schema";
+import Editor from "./editor/rich-text-editor";
+import { toast } from "sonner";
+import { publichPost, savePost, saveVisibility } from "@/actions/post";
+import { useRouter } from "next/navigation";
+import { prisma } from "@/lib/db";
 
 type PropsType = {
   post: Post;
@@ -44,19 +43,43 @@ export default function BlogPostForm({ post }: PropsType) {
   const [visibility, setVisibility] = React.useState<Visibility>(
     post.visibility
   );
+  const router = useRouter();
+  const handleSave = async () => {
+    if (!title) return toast.warning("Title cannot be empty");
+    setSaving(true);
+    try {
+      await savePost(post.id, title, content, description, false);
+      toast.success("Post saved");
+      return setSaving(false);
+    } catch (error) {
+      setSaving(false);
+      toast.error((error as Error).message);
+    }
+  };
 
-   const form = useForm<z.infer<typeof blogSchema>>({
-     resolver: zodResolver(blogSchema),
-     defaultValues: {
-       title : post.title,
-       content : post.content,
-      description  : post.description
-     },
-   });
-
-  const handleSaveSettingsIcon = () => {};
-  const handleSave = () => {};
-  const handlePublish = () => {};
+  const handleSaveSettingsIcon = async () => {
+    try {
+      await saveVisibility(post.id, visibility);
+      toast.success("Post saved");
+      setOpen(false);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
+  const handlePublish = async () => {
+    if (!title) {
+      return toast.warning("Title cannot be empty");
+    }
+    setPublishing(true);
+    try {
+      await publichPost(post.id, title, content, description, false);
+      toast.success("Post publisched");
+      setPublishing(false);
+    } catch (error) {
+      setPublishing(true);
+      toast.error((error as Error).message);
+    }
+  };
 
   return (
     <>
@@ -67,6 +90,7 @@ export default function BlogPostForm({ post }: PropsType) {
             <Button
               variant="ghost"
               className="px-2.5 border-solid rounded-[6px] border-zinc-900 hover:bg-zinc-900 hover:border-[1px]"
+              type="button"
             >
               <SettingsIcon size={20} />
             </Button>
@@ -95,7 +119,8 @@ export default function BlogPostForm({ post }: PropsType) {
             </Select>
             <div className="flex justify-end">
               <Button
-                className=" rounded-[6px] bg-zinc-900"
+                type="button"
+                className=" rounded-[6px] bg-zinc-900  "
                 onClick={handleSaveSettingsIcon}
               >
                 Save
@@ -128,7 +153,7 @@ export default function BlogPostForm({ post }: PropsType) {
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <RichTextEditor
+          <Editor
             options={{ content }}
             onChange={(editor) =>
               setContent(editor.storage.markdown.getMarkdown())
@@ -137,12 +162,18 @@ export default function BlogPostForm({ post }: PropsType) {
           <div
             className={cn(
               "flex",
-              post.published ? "justify-end" : "justify-between"
+              post.published ? "justify-end" : "justify-between",
+              "mt-2"
             )}
           >
             {!post.published && (
               <>
-                <Button onClick={handleSave} disabled={saving}>
+                <Button
+                  type="button"
+                  className="rounded-[6px] bg-zinc-900 hover:bg-zinc-800 "
+                  onClick={handleSave}
+                  disabled={saving}
+                >
                   {saving && (
                     <Loader2Icon size={16} className="mr-2 animate-spin" />
                   )}
@@ -150,7 +181,13 @@ export default function BlogPostForm({ post }: PropsType) {
                 </Button>
               </>
             )}
-            <Button onClick={handlePublish} disabled={publishing}>
+
+            <Button
+              type="button"
+              className="rounded-[6px] bg-zinc-900 hover:bg-zinc-800"
+              onClick={handlePublish}
+              disabled={publishing}
+            >
               {publishing && (
                 <Loader2Icon size={16} className="mr-2 animate-spin" />
               )}

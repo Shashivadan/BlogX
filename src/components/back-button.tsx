@@ -10,6 +10,7 @@ export default function BackButton(props: BackProps) {
   const router = useRouter();
   return (
     <Button
+    type="button"
       onClick={() => router.back()}
       className=" hover:bg-zinc-900 rounded-[6px] "
       {...props}

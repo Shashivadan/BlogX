@@ -1,22 +1,27 @@
-import React from "react";
-import { extensions } from "./extensions";
-import "@/styles/editor.css";
+"use client";
+
 import {
   EditorContent,
-  EditorEvents,
-  EditorOptions,
+  type EditorEvents,
+  type EditorOptions,
   useEditor,
 } from "@tiptap/react";
 import { cn } from "@/lib/utils";
 import { Loader2Icon } from "lucide-react";
-import ToolBar from "./tool-bar";
 
-type PropsType = {
+import "@/styles/editor.css";
+
+import { extensions } from "./extensions";
+import Toolbar from "./tool-bar";
+
+type EditorProps = {
   options?: Partial<EditorOptions>;
-  onChange?: (e: EditorEvents["update"]["editor"]) => void;
+  onChange?: (editor: EditorEvents["update"]["editor"]) => void;
 };
 
-export default function RichTextEditor({ options, onChange }: PropsType) {
+const Editor = (props: EditorProps) => {
+  const { options, onChange } = props;
+
   const editor = useEditor({
     extensions,
     editorProps: {
@@ -33,17 +38,19 @@ export default function RichTextEditor({ options, onChange }: PropsType) {
   if (!editor) {
     return <Loader2Icon size={36} className="mx-auto animate-spin" />;
   }
+
   return (
     <div className="flex w-full flex-col">
-      {editor.isEditable && <ToolBar editor={editor} />}
+      {editor.isEditable && <Toolbar editor={editor} />}
       <EditorContent
         editor={editor}
         className={cn(
           "min-h-[350px] bg-background px-2 py-6",
-          editor.isEditable &&
-            "rounded-b border border-zinc-900 rounded-y-[6px] focus-visible::border-[2px]"
+          editor.isEditable && "rounded-b border border-zinc-900"
         )}
       />
     </div>
   );
-}
+};
+
+export default Editor;
