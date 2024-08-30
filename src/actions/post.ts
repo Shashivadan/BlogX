@@ -55,13 +55,11 @@ export const savePost = async (
         updatedAt: new Date(),
       },
     });
-     revalidatePath(`/posts/${id}`);
+    revalidatePath(`/posts/${id}`);
   } catch (error) {
     handleError();
   }
 };
-
-
 
 export const saveVisibility = async (id: string, visibility: Visibility) => {
   const user = await getCurrentUser();
@@ -83,7 +81,6 @@ export const saveVisibility = async (id: string, visibility: Visibility) => {
   }
 };
 
-
 export const deletePost = async (id: string) => {
   const user = await getCurrentUser();
   if (!user) throw new Error(NOT_LOGGED_IN_ERROR);
@@ -101,9 +98,9 @@ export const deletePost = async (id: string) => {
   }
 };
 
-
 export const likePost = async (id: string) => {
   const user = await getCurrentUser();
+
   if (!user) throw new Error("Please log in to like this post.");
 
   try {
@@ -113,26 +110,40 @@ export const likePost = async (id: string) => {
         userId: user.id,
       },
     });
-     revalidatePath(`/posts/${id}`);
-  } catch (error) {
-     revalidatePath(`/posts/${id}`);
+
+    revalidatePath(`/posts/${id}`);
+  } catch {
+    revalidatePath(`/posts/${id}`);
     handleError();
   }
 };
 
 export const unlikePost = async (id: string) => {
   const user = await getCurrentUser();
+
   if (!user) throw new Error("Please log in to unlike this post.");
+
   try {
-    const result = await prisma.like.deleteMany({
+    const like = await prisma.like.findFirst({
       where: {
         postId: id,
         userId: user.id,
       },
+      select: {
+        id: true,
+      },
     });
-    if (result.count === 0) throw new Error("You have not liked this post.");
+
+    if (!like) throw new Error("You have not liked this post.");
+
+    await prisma.like.delete({
+      where: {
+        id: like?.id,
+      },
+    });
+
     revalidatePath(`/posts/${id}`);
-  } catch (error) {
+  } catch {
     revalidatePath(`/posts/${id}`);
     handleError();
   }
