@@ -25,7 +25,7 @@ import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import Editor from "./editor/rich-text-editor";
 import { toast } from "sonner";
-import { publichPost, savePost, saveVisibility } from "@/actions/post";
+import { savePost, saveVisibility } from "@/actions/post";
 import { useRouter } from "next/navigation";
 import { prisma } from "@/lib/db";
 
@@ -72,7 +72,7 @@ export default function BlogPostForm({ post }: PropsType) {
     }
     setPublishing(true);
     try {
-      await publichPost(post.id, title, content, description, false);
+      await savePost(post.id, title, content, description, true);
       toast.success("Post publisched");
       setPublishing(false);
     } catch (error) {
