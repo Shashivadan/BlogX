@@ -1,9 +1,12 @@
+
+
 import React from 'react'
 import type { Metadata } from 'next';
 import PageHeader from '@/components/page-headers';
 import { getCurrentUser } from '@/lib/get-current-user';
 import { redirect } from 'next/navigation';
 import SettingsForm from '@/components/setting-form';
+import SettingsDeleteAccount from '@/components/settings-delete-account';
 
 
 const title = "Settings";
@@ -28,6 +31,7 @@ export default async function page() {
     <PageHeader title={title} description={description}/>
     <div className='my-8 space-y-4'>
       <SettingsForm user={user}/>
+      <SettingsDeleteAccount/>
     </div>
     </div>
   )

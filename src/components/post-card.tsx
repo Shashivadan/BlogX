@@ -3,6 +3,7 @@ import React from "react";
 import { HeartIcon } from "lucide-react";
 import UserAvatar from "./user-avatar";
 import Controls from "./controls";
+import { formatPostDate } from "@/utils/format-post-date";
 
 import Link from "next/link";
 export type PostCardProps = {
@@ -46,7 +47,7 @@ export default function PostCard({
                 <span>·</span>
               </>
             )}
-            {/* <span className="text-xs">{formatPostDate(createdAt)}</span> */}
+            <span className="text-xs">{formatPostDate(createdAt)}</span>
           </div>
           <Link
             href={`/${published ? "posts" : "editor"}/${id}`}
