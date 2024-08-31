@@ -29,7 +29,6 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     creator: "Shashivadan99",
   },
-  manifest: `${siteConfig.url}/site.webmanifest`,
   icons: {
     icon: `./favicon/icon.svg`,
   },
