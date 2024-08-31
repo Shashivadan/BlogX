@@ -27,6 +27,7 @@ export default function NewPostButton() {
 
   return (
     <Button
+    type="button"
       onClick={newPost}
       disabled={isPending}
       variant="ghost"

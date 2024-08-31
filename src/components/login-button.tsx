@@ -13,6 +13,7 @@ export default function LoginButton() {
   return (
     <div>
       <Button
+        type="button"
         onClick={() => {
           setLoading(true);
           try {

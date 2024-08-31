@@ -26,6 +26,7 @@ export default function Menu({ user }: MenuProp) {
   if (!user) {
     return (
       <Button
+      type="button"
         className=" bg-zinc-900 hover:bg-zinc-800/50 rounded-[6px] border-solid border-[1px] border-zinc-800 text-sm md:h-10 "
         asChild
       >
