@@ -34,9 +34,9 @@ export default async function Home() {
     }
   })
 
-   if (posts.length === 0) {
-     return <div className="text-center">No posts yet.</div>;
-   }
+  if (posts.length === 0) {
+    return <div className="text-center">No posts yet.</div>;
+  }
 
   return (
     <main className="">

@@ -74,6 +74,8 @@ model Post {
   author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   visibility  Visibility @default(PUBLIC)
   likes       Like[]
+
+  @@index([authorId])
 }
 
 model Like {
@@ -82,4 +84,6 @@ model Like {
   userId String
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId , userId])
 }

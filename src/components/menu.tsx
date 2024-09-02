@@ -8,7 +8,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -26,7 +25,7 @@ export default function Menu({ user }: MenuProp) {
   if (!user) {
     return (
       <Button
-      type="button"
+        type="button"
         className=" bg-zinc-900 hover:bg-zinc-800/50 rounded-[6px] border-solid border-[1px] border-zinc-800 text-sm md:h-10 "
         asChild
       >
@@ -68,6 +67,7 @@ export default function Menu({ user }: MenuProp) {
             <Link href="/me/settings">Settings</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-zinc-800" />
+          <DropdownMenuItem asChild><Link href={"https://github.com/Shashivadan/blogx/issues/new"}>Report a issue</Link></DropdownMenuItem>
           <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

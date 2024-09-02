@@ -1,1 +1,1 @@
-export {deletePost , savePost  } from "./post"
+export { deletePost, savePost } from "./post";
