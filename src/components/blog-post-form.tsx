@@ -23,7 +23,7 @@ import {
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
-import Editor from "./editor/rich-text-editor";
+import Editor from "./editor/index";
 import { toast } from "sonner";
 import { savePost, saveVisibility } from "@/actions/post";
 import { useRouter } from "next/navigation";
@@ -133,7 +133,7 @@ export default function BlogPostForm({ post }: PropsType) {
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="title">Title</Label>
           <Input
-            className="mt-2 rounded-[6px] border-zinc-900 focus:border-zinc-900 focus:border-[4px]"
+            className="mt-2 rounded-[6px] border-zinc-900 focus:border-zinc-900  focus-visible:ring-zinc-800 "
             type="text"
             id="title"
             placeholder="Title"
@@ -143,22 +143,24 @@ export default function BlogPostForm({ post }: PropsType) {
             }}
           />
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 ">
           <Label htmlFor="title">Description</Label>
           <Textarea
-            className="rounded-[6px] border-zinc-900 mt-2 focus:border-zinc-90 resize-none"
+            className="rounded-[6px] border-zinc-900 mt-2 focus:border-zinc-90 resize-none focus:ring-zinc-900 focus-visible:ring-zinc-800"
             onChange={(e) => setDescription(e.target.value)}
             placeholder="description"
             value={description ?? undefined}
           />
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 ">
           <Editor
             options={{ content }}
             onChange={(editor) =>
               setContent(editor.storage.markdown.getMarkdown())
             }
           />
+
+
           <div
             className={cn(
               "flex",
